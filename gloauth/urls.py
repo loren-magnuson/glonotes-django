@@ -10,8 +10,8 @@ urlpatterns = [
     url(r'^auth/post_note/', views.PostNoteView.as_view(), name='post-note-view'),
     url(r'^auth/get_notes/', views.GetNotesView.as_view(), name='get-notes-view'),
     url(r'^auth/get_note/', views.GetSingleNoteView.as_view(), name='get-single-note-view'),
-    url(r'^auth/users/register', views.RegisterUser.as_view(), name='register-user-view'),
-
+    url(r'^auth/users/register/', views.RegisterUser.as_view(), name='register-user-view'),
+    url(r'^auth/delete_note/', views.DeleteNoteView.as_view(), name='delete-note-view'),
 
 ]
 

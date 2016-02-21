@@ -40,6 +40,12 @@ def checkForNewNotes(request, coordinates):
             else:
                 note_dict['image_filename'] = note.image_filename
 
+            if note_dict['author'] == request.user.username:
+                note_dict['is_owner'] = "TRUE"
+
+            else:
+                note_dict['is_owner'] = "FALSE"
+
             notes_found["note%s" % (note_count)] = note_dict
 
     if len(notes_found) > 0:
@@ -175,6 +181,7 @@ class GetSingleNoteView(APIView):
                 note_json['author'] = note.author.username
 
 
+
                 return Response(note_json, content_type='application/json')
 
             except:
@@ -198,15 +205,15 @@ class DeleteNoteView(APIView):
         if 'note_id' in request.POST:
             try:
                 note = GloNote.objects.get(id=request.POST['note_id'])
-                return Response(note_json, content_type='application/json')
 
+                if note.author.username == request.user.username:
+                    note.delete()
+                    return Response("NOTE DELETED", content_type='application/json')
+
+                else:
+                    return Response("YOU DO NOTE OWN THIS NOTE.", content_type='application/json')
             except:
-                return Response("NO SUCH NOTE ID" % (request.POST['note_id']), content_type='application/json')
-
-            note_json = {}
-            note_json['subject'] = note.subject
-            note_json['textMessage'] = note.textMessage
-            note_json['author'] = note.author.username
+                return Response("NO SUCH NOTE ID: %s" % (request.POST['note_id']), content_type='application/json')
 
         else:
             return Response("NO NOTE ID RECEIVED" % (request.POST['note_id']), content_type='application/json')

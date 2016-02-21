@@ -28,8 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-MEDIA_ROOT = "/home/busychild/glonotes2/media/"
-#MEDIA_ROOT = "./media/"
+#MEDIA_ROOT = "/home/busychild/glonotes2/media/"
+MEDIA_ROOT = "./media/"
 
 MEDIA_URL = 'media/'
 # Application definition
