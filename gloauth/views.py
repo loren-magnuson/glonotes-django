@@ -218,9 +218,7 @@ class RegisterUser(APIView):
     """
 
     def post(self, request, format=None):
-        print(request.data)
         serialized = UserSerializer(data=request.data)
-        print(serialized)
 
         if serialized.is_valid():
             User.objects.create_user(
@@ -228,6 +226,8 @@ class RegisterUser(APIView):
             serialized.data['email'],
             serialized.data['password']
         )
-            return Response(serialized.data, status=status.HTTP_201_CREATED)
+            account_created_json = {}
+            account_created_json["registration_status"] = "Account created!"
+            return Response(account_created_json, status=status.HTTP_201_CREATED)
         else:
             return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)
