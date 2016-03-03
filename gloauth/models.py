@@ -1,17 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import signals
+from glonotes import settings
 import os
 # Create your models here.
 class UserProfile(models.Model):
     # This field is required.
     user = models.OneToOneField(User)
-    user_profile_directory = '%s\\media\\' % os.getcwd()
 
 
     # Other fields here
     last_known_coordinates = models.CharField(max_length=100, default="uninitialized")
-    user_profile_directory = '%s\\media\\' % os.getcwd()
 
 
     def __str__(self):
@@ -19,7 +18,7 @@ class UserProfile(models.Model):
 
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        user_profile_directory = '%s\\media\\' % os.getcwd()
+        user_profile_directory = settings.MEDIA_ROOT
         UserProfile.objects.create(user=instance)
         dirname = instance.username
         os.mkdir(os.path.join(user_profile_directory, dirname))
